@@ -62,6 +62,11 @@ export class DefaultAuthenticationService
   }
 
   async register(email: string, password: string): Promise<User> {
+    if (this._user) {
+      throw new Error(
+        "AuthenticationService: Failed to register. Already signed in."
+      );
+    }
     try {
       const result = await createUserWithEmailAndPassword(
         FIREBASE_AUTH,
