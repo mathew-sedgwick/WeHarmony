@@ -50,14 +50,13 @@ export class DefaultAuthenticationService
         email,
         password
       );
-      console.log(result);
+      this._setUser(result.user);
+      this.onSignIn?.(this.user!);
     } catch (e) {
       throw new Error("AuthenticationService: Failed to sign in", {
         cause: e,
       });
     }
-    this._setUser(FIREBASE_AUTH.currentUser!);
-    this.onSignIn?.(this.user!);
     return this._user!;
   }
 
@@ -95,10 +94,10 @@ export class DefaultAuthenticationService
 
   private _setUser(firebaseUser: FireBaseUser | undefined): void {
     this._user = firebaseUser
-      ? {
-          email: firebaseUser?.email!,
-          username: firebaseUser?.displayName ?? undefined,
-        }
+      ? new User({
+          email: firebaseUser.email!,
+          id: firebaseUser.uid,
+        })
       : undefined;
     this.emit("user-changed", this._user);
   }

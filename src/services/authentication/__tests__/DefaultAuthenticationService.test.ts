@@ -2,10 +2,10 @@ import { DefaultAuthenticationService } from "../DefaultAuthenticationService";
 
 jest.mock("firebase/auth", () => ({
   signInWithEmailAndPassword: async () => ({
-    user: { displayName: "Test User" },
+    user: { email: "testuser@test.com", uid: "1234554321" },
   }),
   createUserWithEmailAndPassword: async () => ({
-    user: { displayName: "New Test User" },
+    user: { email: "testuser@test.com", uid: "1234554321" },
   }),
   signOut: () => {
     signedOut = true;
@@ -25,9 +25,9 @@ describe("signIn()", () => {
   it("executes the firebase signInWithEmailAndPassword()", async () => {
     const service = new DefaultAuthenticationService();
 
-    const user = await service.signIn("test@gmail.com", "test");
+    const user = await service.signIn("testuser@test.com", "test");
 
-    expect(user.username).toBe("Test User");
+    expect(user.email).toBe("testuser@test.com");
   });
   it("executes the onSignIn callback", async () => {
     let signIn = false;
@@ -35,7 +35,7 @@ describe("signIn()", () => {
       onSignIn: () => (signIn = true),
     });
 
-    await service.signIn("test@gmail.com", "test");
+    await service.signIn("testuser@test.com", "test");
 
     expect(signIn).toBe(true);
   });
@@ -45,9 +45,9 @@ describe("register()", () => {
   it("executes the firebase createUserWithEmailAndPassword()", async () => {
     const service = new DefaultAuthenticationService();
 
-    const user = await service.register("test@gmail.com", "test");
+    const user = await service.register("testuser@test.com", "test");
 
-    expect(user.username).toBe("New Test User");
+    expect(user.email).toBe("testuser@test.com");
   });
   it("executes the onRegister and then the onSignIn callback", async () => {
     let val = 1;
@@ -56,7 +56,7 @@ describe("register()", () => {
       onRegister: () => (val *= 2),
     });
 
-    await service.register("test@gmail.com", "test");
+    await service.register("testuser@test.com", "test");
 
     expect(val).toBe(3);
   });

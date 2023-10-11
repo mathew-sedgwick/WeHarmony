@@ -3,9 +3,10 @@ import { FC, useEffect } from "react";
 import ServiceProvider from "../service-provider/ServiceProvider";
 import { router, Stack } from "expo-router";
 import "expo-router/entry";
-import { DefaultAuthenticationService } from "src/services/authentication/DefaultAuthenticationService";
-import { DefaultLocalizationService } from "src/services/localization/DefaultLocalizationService";
-import { DefaultBrandingService } from "src/services/branding/DefaultBrandingService";
+import { DefaultAuthenticationService } from "../services/authentication/DefaultAuthenticationService";
+import { DefaultLocalizationService } from "../services/localization/DefaultLocalizationService";
+import { DefaultBrandingService } from "../services/branding/DefaultBrandingService";
+import { DefaultDataService } from "../services/data/DefaultDataService";
 
 // export const unstable_settings = {
 // };
@@ -17,9 +18,14 @@ const AUTH_SERVICE = new DefaultAuthenticationService({
   onSignOut: () => {
     router.replace("sign-in");
   },
+  onRegister: (user) => {
+    user.dataService = DATA_SERVICE;
+    // user.initialize();
+  },
 });
 const LOCALIZATION_SERVICE = new DefaultLocalizationService({});
 const BRANDING_SERVICE = new DefaultBrandingService({});
+const DATA_SERVICE = new DefaultDataService({});
 
 const App: FC = () => {
   useEffect(() => {
@@ -35,6 +41,7 @@ const App: FC = () => {
         authenticationService: AUTH_SERVICE,
         localizationService: LOCALIZATION_SERVICE,
         brandingService: BRANDING_SERVICE,
+        dataService: DATA_SERVICE,
       }}
     >
       <Stack>
