@@ -17,7 +17,6 @@ export interface UserProperties extends SyncableBaseProperties {
 export class User extends SyncableBase<UserProperties> {
   readonly email: string;
   readonly id: string;
-  readonly tableId = "users";
 
   dataService!: DataService;
 
@@ -26,6 +25,8 @@ export class User extends SyncableBase<UserProperties> {
   birthDate: Date | undefined;
   relationshipId: string | undefined;
 
+  protected _tableId = "users";
+
   constructor(properties: UserProperties) {
     super(properties);
     if (!properties?.email || !properties.id) {
@@ -33,6 +34,7 @@ export class User extends SyncableBase<UserProperties> {
     }
     this.email = properties.email;
     this.id = properties.id;
+    this._recordId = this.id;
   }
 
   protected _getPropertyDefinitions(): PropertyDefinitions<UserProperties> {
@@ -40,11 +42,9 @@ export class User extends SyncableBase<UserProperties> {
       ...super._getPropertyDefinitions(),
       id: {
         assignProperty: false,
-        exportProperty: false,
       },
       email: {
         assignProperty: false,
-        exportProperty: false,
       },
       birthDate: {},
       firstName: {},

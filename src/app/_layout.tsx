@@ -12,15 +12,18 @@ import { DefaultDataService } from "../services/data/DefaultDataService";
 // };
 
 const AUTH_SERVICE = new DefaultAuthenticationService({
-  onSignIn: () => {
+  onSignIn: async (user) => {
+    user.dataService = DATA_SERVICE;
     router.replace("home");
+    await user.pull();
   },
   onSignOut: () => {
     router.replace("sign-in");
   },
-  onRegister: (user) => {
+  onRegister: async (user) => {
     user.dataService = DATA_SERVICE;
-    // user.initialize();
+    await user.push();
+    await user.pull();
   },
 });
 const LOCALIZATION_SERVICE = new DefaultLocalizationService({});

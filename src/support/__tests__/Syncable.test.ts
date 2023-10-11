@@ -233,8 +233,8 @@ class TestSyncable extends SyncableBase<TestSyncableProperties> {
   foo: number | undefined;
   bar: number | undefined;
   baz: any | undefined;
-  readonly recordId = "test-record";
-  readonly tableId = "test-table";
+  protected _recordId = "test-record";
+  protected _tableId = "test-table";
   protected _getPropertyDefinitions(): PropertyDefinitions<TestSyncableProperties> {
     return {
       ...super._getPropertyDefinitions(),
@@ -266,8 +266,8 @@ interface ComplexTestSyncableProperties extends SyncableBaseProperties {
 }
 
 class ComplexTestSyncable extends SyncableBase<ComplexTestSyncableProperties> {
-  readonly recordId = "base-record";
-  readonly tableId = "base-table";
+  protected _recordId = "base-record";
+  protected _tableId = "base-table";
 
   basePropA: string | undefined;
   basePropB: string | undefined;

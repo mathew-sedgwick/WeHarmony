@@ -16,15 +16,21 @@ export abstract class SyncableBase<
     return this._initialized;
   }
 
-  readonly recordId: string | undefined;
-  readonly tableId: string | undefined;
+  get recordId(): string | undefined {
+    return this._recordId;
+  }
+  get tableId(): string | undefined {
+    return this._tableId;
+  }
 
+  protected _recordId: string | undefined;
+  protected _tableId: string | undefined;
   private _initialized = false;
 
   constructor(properties?: TProperties) {
     super();
-    this.tableId = properties?.tableId;
-    this.recordId = properties?.recordId;
+    this._tableId = properties?.tableId;
+    this._recordId = properties?.recordId;
     properties && this.assignProperties(properties);
   }
 
